@@ -6,7 +6,6 @@ import {
   resetBarStyleDefault,
   disableButtons,
   enableButtons,
-  playCompletedSoundEffect,
 } from "../../HelperFunctions.js";
 
 const BubbleSort = (array, animationSpeed) => {
@@ -65,7 +64,6 @@ const BubbleSort = (array, animationSpeed) => {
     });
 
     Promise.all([promise1, promise2])
-      // .then(playCompletedSoundEffect)
       // Enabling the buttons when both the promises have been resolved.
       .then(enableButtons);
   }

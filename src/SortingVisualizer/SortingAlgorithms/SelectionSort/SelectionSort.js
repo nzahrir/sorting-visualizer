@@ -68,7 +68,6 @@ const SelectionSort = (array, animationSpeed) => {
     });
 
     Promise.all([promise1, promise2])
-      .then(playCompletedSoundEffect)
       // Enabling the buttons when both the promises have been resolved.
       .then(enableButtons);
   }

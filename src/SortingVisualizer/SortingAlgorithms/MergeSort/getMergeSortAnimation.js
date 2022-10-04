@@ -1,16 +1,5 @@
-import {
-  changeBackgroundColor,
-  changeBoxShadow,
-  swapBars,
-  resetBarStyleDefault,
-  disableButtons,
-  enableButtons,
-  playCompletedSoundEffect,
-  changeBackgroundColorArrayIndex,
-} from "../../HelperFunctions.js";
-var arrays = [];
-var colors = [];
-const getMergeSortAnimation = (arr, n) => {
+export function getMergeSortAnimation(arr, n) {
+  let animations = [];
   var curr_size;
 
   var left_start;
@@ -28,25 +17,28 @@ const getMergeSortAnimation = (arr, n) => {
 
       // Merge Subarrays arr[left_start...mid]
       // & arr[mid+1...right_end]
-      console.log(arr);
-      merge(arr, left_start, mid, right_end);
+      merge(arr, left_start, mid, right_end, animations);
     }
   }
-  console.log("arrays:" + arrays);
-  console.log("colors: " + colors);
-  return [arrays, colors];
-};
+  return animations;
+}
 
 /*
  * Function to merge the two haves arr[l..m] and arr[m+1..r] of array arr
  */
-function merge(arr, l, m, r) {
+function merge(arr, l, m, r, animations) {
+  console.log(
+    "-----------------left " +
+      l +
+      " right " +
+      r +
+      " mid " +
+      m +
+      "----------------"
+  );
   var i, j, k;
   var n1 = m - l + 1;
   var n2 = r - m;
-
-  arrays.push(arr.slice(l, r));
-  colors.push("rgba(255,165,0, 0.9)");
   /* create temp arrays */
   var L = Array(n1).fill(0);
   var R = Array(n2).fill(0);
@@ -54,8 +46,14 @@ function merge(arr, l, m, r) {
   /*
    * Copy data to temp arrays L and R
    */
-  for (i = 0; i < n1; i++) L[i] = arr[l + i];
-  for (j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
+  for (i = 0; i < n1; i++) {
+    L[i] = arr[l + i];
+    animations.push(l + i, l + i, 0);
+  }
+  for (j = 0; j < n2; j++) {
+    R[j] = arr[m + 1 + j];
+    animations.push(m + 1 + j, m + 1 + j, 4);
+  }
 
   /*
    * Merge the temp arrays back into arr[l..r]
@@ -63,31 +61,53 @@ function merge(arr, l, m, r) {
   i = 0;
   j = 0;
   k = l;
+  console.log("left array " + L);
+  console.log("right array " + R);
+  console.log("original: " + arr);
   while (i < n1 && j < n2) {
+    animations.push(l + i, m + 1 + j, 5);
+
     if (L[i] <= R[j]) {
-      swapBars(k, l + i);
-      var temp = arr[k];
+      console.log("LEFT SWAP " + L[i] + " with " + arr[k]);
+      // animations.push(k, l + i, 1);
+      // swap(arr, k, l + i);
+
+      // var temp = arr[k];
       arr[k] = L[i];
-      L[i] = temp;
+      // L[i] = temp;
+
+      animations.push(k, arr[k], 6);
+      animations.push(l + i, m + 1 + j, 3);
 
       i++;
     } else {
-      swapBars(k, m + 1 + j);
-      var temp = arr[k];
+      console.log("RIGHT SWAP " + R[j] + " with " + arr[k]);
+
+      // animations.push(k, m + 1 + j, 1);
+      // swap(arr, k, m + 1 + j);
+      // var temp = arr[k];
       arr[k] = R[j];
-      R[i] = temp;
+      // R[i] = temp;
+      animations.push(k, arr[k], 6);
+      animations.push(l + i, m + 1 + j, 3);
 
       j++;
     }
+
     k++;
+    console.log("left index " + i + " right index " + j + " merge index " + k);
+    console.log("ORIGINAL ARRAY " + arr);
   }
 
   //Remaining left half
   while (i < n1) {
     //
-    swapBars(k, l + i);
-
+    console.log("left over " + L[i]);
+    // swapBars(k, l + i);
+    // swap(arr, k, l + i);
     arr[k] = L[i];
+    animations.push(k, arr[k], 6);
+    console.log("ORIGINAL ARRAY " + arr);
 
     i++;
     k++;
@@ -96,16 +116,31 @@ function merge(arr, l, m, r) {
   //Remaining right half
   while (j < n2) {
     //
-    swapBars(k, m + 1 + j);
+    console.log("right over " + R[i]);
 
+    // animations.push(k, m + 1 + j, 1);
+    // swap(arr, k, m + 1 + j);
     arr[k] = R[j];
+    animations.push(k, arr[k], 6);
+    console.log("ORIGINAL ARRAY " + arr);
+
+    // animations.push(k, m + 1 + j, 3);
 
     j++;
     k++;
   }
+  console.log("after merge: " + arr);
 
-  arrays.push(arr.slice(l, r));
-  colors.push("rgba(144,238,144, 0.9)");
+  // for (i = 0; i < n1; i++) {
+  //   animations.push(l + i, l + i, 2);
+  // }
+  // for (j = 0; j < n2; j++) {
+  //   animations.push(m + 1 + j, m + 1 + j, 2);
+  // }
 }
 
-export default getMergeSortAnimation;
+function swap(items, leftIndex, rightIndex) {
+  let temp = items[leftIndex];
+  items[leftIndex] = items[rightIndex];
+  items[rightIndex] = temp;
+}

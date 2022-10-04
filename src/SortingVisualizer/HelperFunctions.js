@@ -1,5 +1,3 @@
-import CompletedEffect from "./sounds/CompletedEffect.mp3";
-
 const right_color_bar = document.getElementsByClassName("right-color-bar");
 const left_color_bar = document.getElementsByClassName("left-color-bar");
 const front_color_bar = document.getElementsByClassName("front-color-bar");
@@ -69,6 +67,18 @@ export function swapBars(index1, index2) {
   }
 }
 
+export function changeHeight(index, value) {
+  const styleOfElement = getBarStyle(index);
+  for (let j = 0; j < 4; j++) {
+    styleOfElement[j].height = `${value}vh`;
+    const h1 = parseInt(styleOfElement[j].height, 10);
+
+    // transform: `translateY(${70 - value}vh)`,
+
+    styleOfElement[j].transform = `translateY(${70 - h1}vh)`;
+  }
+}
+
 // ## Reset the style of all the color-bars ## //
 export function resetBarStyleDefault(array, animationSpeed) {
   setTimeout(() => {
@@ -111,16 +121,4 @@ export function disableButtons() {
   document.getElementById("insertionSortButton").disabled = true;
   document.getElementById("range-slider").style.opacity = 0;
   document.getElementById("range-slider").style.visibility = "hidden";
-}
-
-// ## Plays audio ## //
-export function playAudio(myAudio) {
-  const audio = new Audio(myAudio);
-  audio.preload = "auto";
-  const playing = audio.play();
-  playing.then(() => {}).catch(() => {});
-}
-
-export function playCompletedSoundEffect() {
-  playAudio(CompletedEffect);
 }

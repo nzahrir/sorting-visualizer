@@ -9,7 +9,7 @@ import { randomIntFromInterval, playAudio } from "./HelperFunctions.js";
 import BubbleSort from "./SortingAlgorithms/BubbleSort/BubbleSort.js";
 import SelectionSort from "./SortingAlgorithms/SelectionSort/SelectionSort.js";
 import InsertionSort from "./SortingAlgorithms/InsertionSort/InsertionSort.js";
-import MergeSortAnimation from "./SortingAlgorithms/MergeSort/getMergeSortAnimation.js";
+import MergeSort from "./SortingAlgorithms/MergeSort/MergeSort.js";
 import QuickSort from "./SortingAlgorithms/QuickSort/QuickSort.js";
 
 // .. STYLE .. //
@@ -19,8 +19,8 @@ import { useEffect, useState } from "react";
 const SortingVisualizer = () => {
   const [state, setState] = useState({
     array: [],
-    animationSpeed: 50,
-    numberOfArrayBars: 10,
+    animationSpeed: 100,
+    numberOfArrayBars: 4,
   });
 
   //This function generates the array before the page is rendered
@@ -68,7 +68,7 @@ const SortingVisualizer = () => {
   };
   // ## Calls the MergeSort component/function. ## //
   const mergeSort = () => {
-    MergeSortAnimation(state.array, state.array.length);
+    MergeSort(state.array, state.animationSpeed);
   };
 
   // ## Calls the QuickSort component/function. ## //
